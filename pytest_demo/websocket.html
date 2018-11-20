@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+</head>
+<body>
+    <script type="text/javascript">
+        var socket;
+		var messageNum=0;
+        if (!window.WebSocket) {
+            window.WebSocket = window.MozWebSocket;
+        }
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://127.0.0.1/push?uniqueId=15b62d64562f000&code=96623930991aa7998e644790804946745dd26c232b754bd4157063d1b7c2364d8ab7816db29e07204e4fa633acdb2829db37d405fb3fa4");
+            socket.onmessage = function(event) {
+				messageNum = messageNum+1;
+                var ta = document.getElementById('responseText');
+				ta.value=messageNum
+            };
+            socket.onopen = function(event) {
+                var ta = document.getElementById('responseText');
+                ta.value = "连接开启!";
+            };
+            socket.onclose = function(event) {
+                var ta = document.getElementById('responseText');
+                ta.value = ta.value + "连接关闭";
+            };
+        } else {
+            alert("您的浏览器不支持 WebSocket!");
+        }
+
+        function send(message) {
+            if (!window.WebSocket) {
+                return;
+            }
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(message);
+            } else {
+                alert("连接没有开启");
+            }
+        }
+    </script>
+    <form onsubmit="return false;">
+        <h3></h3>
+        <textarea id="responseText" style="width: 500px; height: 300px;"></textarea>
+        <br>
+        <input type="text" name="message"  style="width: 300px" value="websocket连接工具">
+    </form>
+    <br>
+    <br>
+    <table border = "1px">
+    <th width = "100px" align="center">title</th>
+    <tr>
+    <td>1列</td>
+    <td>2列</td>
+    <td>3列</td>
+    </tr>
+    </table>
+</body>
+</html>
+
